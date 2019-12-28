@@ -1,7 +1,9 @@
 package oop.customer
 
-const val SERVER_LINK = "127.0.0.1"
+const val SERVER_LINK = "https://django-test-ui-project.fandogh.cloud/store"
 
-const val LOGIN_LINK = "$SERVER_LINK/login"
+const val REGISTER_LINK = "$SERVER_LINK/accounts/register/"
+const val EDIT_PRO_LINK = "$SERVER_LINK/accounts/profile/"
+
 
 const val USERNAME_KEY = "username"
