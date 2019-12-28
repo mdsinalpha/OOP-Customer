@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2FA763</color>
+    <color name="colorPrimaryDark">#2FA763</color>
+    <color name="colorAccent">#43A047</color>
+    <color name="colorSuccess">#50ef50</color>
+    <color name="colorProgress">#FF6F00</color>
+    <color name="colorBackground">#ededed</color>
+    <color name="colorCardBackground">#B8ADAD</color>
+    <color name="colorTitle">#707070</color>
+    <color name="colorSubtitle">#bdbdbd</color>
+    <color name="colorIcon">#AAA</color>
+    <color name="colorBorder">#DDD</color>
+    <color name="xp_exchange_red">#E63C3C</color>
+</resources>

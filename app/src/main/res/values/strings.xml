@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">فروشگاه</string>
+    <string name="main_bottom_nav_products">محصولات</string>
+    <string name="main_bottom_nav_basket">سبد خرید</string>
+    <string name="main_bottom_nav_history">تاریخچه خرید</string>
+    <string name="main_bottom_nav_profile">پروفایل</string>
+    <string name="basket_title">محصولات خریداری شده</string>
+    <string name="status_title">وضعیت خرید</string>
+    <string name="status_processing">پردازش خرید</string>
+    <string name="status_sending">ارسال به مرکز پستی</string>
+    <string name="status_done">تحویل پست داده شد</string>
+    <string name="status_code">کد پیگیری</string>
+    <string name="status_code2">کد پیگیری:</string>
+    <string name="salesman_info_title">اطلاعات فروشنده</string>
+</resources>
