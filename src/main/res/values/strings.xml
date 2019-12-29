@@ -12,4 +12,7 @@
     <string name="status_code">کد پیگیری</string>
     <string name="status_code2">کد پیگیری:</string>
     <string name="salesman_info_title">اطلاعات فروشنده</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

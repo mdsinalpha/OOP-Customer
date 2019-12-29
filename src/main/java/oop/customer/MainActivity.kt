@@ -9,6 +9,7 @@ import com.beust.klaxon.Klaxon
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_basket.*
 import kotlinx.android.synthetic.main.fragment_salesman_info.*
+import oop.customer.Fragments.ProfileFragment
 import oop.customer.api.networktask.NetworkTask
 import oop.customer.api.networktask.jsonRequestBody
 import oop.customer.api.recyclerview.bind
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.main_bottom_nav_history ->
                     null
                 R.id.main_bottom_nav_profile ->
-                    null
+                    ProfileFragment()
                 else ->
                     null
             }
