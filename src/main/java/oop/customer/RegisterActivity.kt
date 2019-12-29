@@ -27,9 +27,9 @@ class RegisterActivity : AppCompatActivity() {
                 NetworkTask(
                     REGISTER_LINK, NetworkTask.Method.POST, """{
             "username": "${usernameTxt.text}",
-            "password":"",
-            "password_confirm": "",
-            "email":""
+            "password":"${passwordTxt.text}",
+            "password_confirm": "${password_confirmTxt.text}",
+            "email":"${emailTxt.text}"
         }""".trimIndent().jsonRequestBody,
                     this, "لطفا منتظر بمانید"
                 ).setOnCallBack { response, s ->
