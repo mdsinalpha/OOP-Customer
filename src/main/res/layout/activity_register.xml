@@ -8,25 +8,28 @@
         android:layout_height="match_parent">
 
     <ImageView
-            android:layout_width="200dp"
+            android:layout_width="120dp"
             android:layout_marginBottom="40dp"
             android:src="@drawable/boy"
-            android:layout_height="200dp"/>
+            android:layout_height="120dp"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
-            android:fontFamily="@font/Vazir_Bold"
+            android:fontFamily="@font/vazir_bold"
             android:textSize="14sp"
             android:text="نام کاربری"/>
 
     <EditText
+            android:id="@+id/usernameTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:fontFamily="@font/Vazir"
+            android:inputType="text"
+            android:fontFamily="@font/vazir"
+            android:imeOptions="actionNext"
             android:layout_marginEnd="20dp"
     />
     <TextView
@@ -34,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginStart="20dp"
-            android:fontFamily="@font/Vazir_Bold"
+            android:fontFamily="@font/vazir_bold"
             android:textSize="14sp"
             android:text="ایمیل"/>
 
@@ -44,7 +47,7 @@
             android:layout_height="wrap_content"
             android:hint="xyz@email.com"
             android:imeOptions="actionNext"
-            android:fontFamily="@font/Vazir"
+            android:fontFamily="@font/vazir"
             android:inputType="textEmailAddress"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -55,24 +58,47 @@
             android:layout_gravity="start"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
-            android:fontFamily="@font/Vazir_Bold"
+            android:fontFamily="@font/vazir_bold"
             android:textSize="14sp"
             android:text="رمز ورود"/>
 
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="text"
             android:layout_marginStart="20dp"
-            android:fontFamily="@font/"
+            android:fontFamily="@font/vazir"
             android:layout_marginEnd="20dp"
     />
-    <Button android:layout_width="match_parent" android:layout_height="wrap_content"
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
-            android:text="ثبت‌نام / ذخیره"
+            android:fontFamily="@font/vazir_bold"
+            android:textSize="14sp"
+            android:text="ورود مجدد رمز ورود"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/vazir"
+            android:layout_marginEnd="20dp"
+    />
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="ثبت‌نام"
             android:textSize="18sp"
             android:textColor="@color/white"
-            android:fontFamily="@font/Vazir_Bold"
-            android:background="@drawable/round_blue"
+            android:fontFamily="@font/vazir_bold"
+            android:background="@drawable/round_primary"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="20dp"/>
 

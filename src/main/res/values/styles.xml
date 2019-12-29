@@ -1,101 +1,108 @@
 <resources>
 
-        <style name="splash_theme" parent="@android:style/Theme.NoTitleBar.Fullscreen"/>
+    <style name="splash_theme" parent="@android:style/Theme.NoTitleBar.Fullscreen"/>
 
-        <style name="app_theme" parent="Theme.MaterialComponents.Light.NoActionBar">
-            <item name="colorPrimary">@color/colorPrimary</item>
-            <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-            <item name="colorAccent">@color/colorAccent</item>
-            <item name="colorOnBackground">@color/colorBackground</item>
-            <item name="colorControlHighlight">@color/colorAccent</item>
-            <item name="android:statusBarColor">@color/colorPrimary</item>
-            <item name="android:textViewStyle">@style/app_theme.text</item>
-        </style>
+    <style name="app_theme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorOnBackground">@color/colorBackground</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:textViewStyle">@style/app_theme.text</item>
+    </style>
 
-        <style name="app_theme.text">
-            <item name="android:fontFamily">@font/shabnam</item>
-            <item name="android:typeface">monospace</item>
-            <item name="android:textAlignment">center</item>
-            <item name="android:gravity">center_horizontal</item>
-        </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
-        <style name="app_theme.text.title" parent="app_theme.text">
-            <item name="android:textSize">30dp</item>
-            <item name="android:textStyle">bold</item>
-            <item name="android:textColor">@color/colorTitle</item>
-        </style>
+    <style name="app_theme.text">
+        <item name="android:fontFamily">@font/shabnam</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
 
-        <style name="app_theme.text.small_title" parent="app_theme.text">
-            <item name="android:textSize">20dp</item>
-            <item name="android:textStyle">bold</item>
-            <item name="android:textColor">@color/colorTitle</item>
+    <style name="app_theme.text.title" parent="app_theme.text">
+        <item name="android:textSize">30dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorTitle</item>
+    </style>
 
-        </style>
+    <style name="app_theme.text.small_title" parent="app_theme.text">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorTitle</item>
 
-        <style name="app_theme.text.subtitle" parent="app_theme.text">
-            <item name="android:textSize">16dp</item>
-            <item name="android:textColor">@color/colorSubtitle</item>
+    </style>
 
-        </style>
+    <style name="app_theme.text.subtitle" parent="app_theme.text">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/colorSubtitle</item>
 
-        <style name="app_theme.input_layout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-            <item name="android:layoutDirection">rtl</item>
-        </style>
+    </style>
 
-        <style name="app_theme.button" parent="Widget.MaterialComponents.Button">
-            <item name="android:fontFamily">@font/shabnam</item>
-            <item name="android:typeface">monospace</item>
-            <item name="android:textSize">16dp</item>
-            <item name="android:textColor">@android:color/white</item>
-            <item name="android:textAlignment">center</item>
-            <item name="android:gravity">center</item>
-        </style>
+    <style name="app_theme.input_layout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layoutDirection">rtl</item>
+    </style>
 
-        <style name="app_theme.text_button" parent="Widget.MaterialComponents.Button.TextButton">
-            <item name="android:typeface">monospace</item>
-            <item name="android:fontFamily">@font/shabnam</item>
-            <item name="android:textSize">16dp</item>
-            <item name="android:textColor">@android:color/white</item>
-            <item name="android:textAlignment">center</item>
-            <item name="android:gravity">center</item>
-            <item name="rippleColor">@android:color/white</item>
-        </style>
+    <style name="app_theme.button" parent="Widget.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/shabnam</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center</item>
+    </style>
 
-        <style name="app_theme.card_view" parent="Widget.MaterialComponents.CardView">
-            <item name="android:clickable">true</item>
-            <item name="android:focusable">true</item>
-            <item name="cardElevation">2dp</item>
-            <item name="cardCornerRadius">5dp</item>
-            <item name="strokeWidth">1dp</item>
-            <item name="strokeColor">@color/colorBorder</item>
-            <item name="rippleColor">@color/colorAccent</item>
-        </style>
+    <style name="app_theme.text_button" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:typeface">monospace</item>
+        <item name="android:fontFamily">@font/shabnam</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center</item>
+        <item name="rippleColor">@android:color/white</item>
+    </style>
 
-        <style name="app_theme.bar_icon">
-            <item name="android:focusable">true</item>
-            <item name="android:clickable">true</item>
-            <item name="android:tint">@color/colorIcon</item>
-            <item name="android:background">@drawable/ripple</item>
-        </style>
+    <style name="app_theme.card_view" parent="Widget.MaterialComponents.CardView">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardCornerRadius">5dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/colorBorder</item>
+        <item name="rippleColor">@color/colorAccent</item>
+    </style>
 
-        <style name="app_theme.icon">
-            <item name="android:focusable">true</item>
-            <item name="android:clickable">true</item>
-            <item name="android:tint">@color/colorPrimary</item>
-            <item name="android:background">@drawable/ripple</item>
-        </style>
+    <style name="app_theme.bar_icon">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:tint">@color/colorIcon</item>
+        <item name="android:background">@drawable/ripple</item>
+    </style>
 
-        <style name="app_theme.circle_image_view">
-            <item name="civ_border_width">2dp</item>
-            <item name="civ_border_color">@color/colorPrimary</item>
-        </style>
+    <style name="app_theme.icon">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:tint">@color/colorPrimary</item>
+        <item name="android:background">@drawable/ripple</item>
+    </style>
 
-        <style name="enthusi4stic.circular_progress_bar_dialog" parent="android:style/Theme.Translucent">
-            <item name="android:backgroundDimEnabled">true</item>
-        </style>
+    <style name="app_theme.circle_image_view">
+        <item name="civ_border_width">2dp</item>
+        <item name="civ_border_color">@color/colorPrimary</item>
+    </style>
 
-        <style name="enthusi4stic.horizontal_progress_bar_dialog" parent="android:style/Theme.Translucent">
-            <item name="android:backgroundDimEnabled">true</item>
-        </style>
+    <style name="enthusi4stic.circular_progress_bar_dialog" parent="android:style/Theme.Translucent">
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="enthusi4stic.horizontal_progress_bar_dialog" parent="android:style/Theme.Translucent">
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 
 </resources>
