@@ -16,4 +16,10 @@
             android:title="@string/main_bottom_nav_history"
             android:icon="@drawable/ic_history"/>
 
+    <item
+            android:id="@+id/main_bottom_nav_profile"
+            android:title="@string/main_bottom_nav_profile"
+            android:icon="@drawable/ic_person"
+        />
+
 </menu>
