@@ -10,10 +10,8 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-// import com.bumptech.glide.Glide
-import oop.customer.api.networktask.ImageLoadTask
 import oop.customer.api.recyclerview.BindView.Companion.DefaultID
-import org.intellij.lang.annotations.Language
+//import com.bumptech.glide.Glide
 import java.lang.reflect.Field
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
@@ -43,8 +41,6 @@ class RecyclerViewAdapter<T : Any>(
         abstract fun getLayoutManager(context: Context): RecyclerView.LayoutManager
     }
 
-    val imageLoadTask = ImageLoadTask()
-
     private val views = mutableMapOf<BindView, View>()
     private val fields = mutableMapOf<BindView, Field>()
     private var bindAction: ((View, T, Int) -> Unit)? = null
@@ -52,7 +48,19 @@ class RecyclerViewAdapter<T : Any>(
     private var onHeaderClickListener: ((View) -> Unit)? = null
     private var onFooterClickListener: ((View) -> Unit)? = null
 
-    fun setCustomBind(bind: View.(T, Int) -> Unit): RecyclerViewAdapter<T> {
+    /**
+     * Gets a custom binding logic and binds that way.
+     *
+     * Note that this binding takes place after auto binding provided by this Generic class, so any
+     * logic conflicting auto binding logic will override its behaviour.
+     * @param bind lambda that provides item [View], [T] element in that position and [Int] position
+     * of the element and View.
+     *
+     * Note that these do not include Header and Footer items, and lambda parameters refers to
+     * Real Items in the list (Value is same with or without header)
+     * @return RecyclerViewAdapter<T>
+     */
+    fun setCustomBind(bind: View.(element: T, position: Int) -> Unit): RecyclerViewAdapter<T> {
         bindAction = bind
         return this
     }
@@ -69,11 +77,24 @@ class RecyclerViewAdapter<T : Any>(
         return this
     }
 
+    /**
+     * Sets the action performed on header clicked, if that exists.
+     *
+     * It does not matter that you set the Listener before or after setting the header itself. It
+     * has no effect to set the ActionListener without setting the header layout.
+     */
     fun setOnHeaderClickListener(action: (View) -> Unit): RecyclerViewAdapter<T> {
         onHeaderClickListener = action
         return this
     }
 
+    /**
+     * Sets the action performed on footer clicked, if that exists.
+     *
+     * It does not matter that you set the Listener before or after setting the footer itself. It
+     * has no effect to set the ActionListener without setting the footer layout.
+     * @return RecyclerViewAdapter<T>
+     */
     fun setOnFooterClickListener(action: (View) -> Unit): RecyclerViewAdapter<T> {
         onFooterClickListener = action
         return this
@@ -82,11 +103,19 @@ class RecyclerViewAdapter<T : Any>(
     private var headerLayoutId = 0
     private var footerLayoutId = 0
 
+    /**
+     * Sets the headerLayoutId (the first item visible in the recycler view).
+     * @return RecyclerViewAdapter<T>
+     */
     fun setHeaderLayout(@LayoutRes headerLayout: Int): RecyclerViewAdapter<T> {
         this.headerLayoutId = headerLayout
         return this
     }
 
+    /**
+     * Sets the footerLayoutId (the last item visible in the recycler view).
+     * @return RecyclerViewAdapter<T>
+     */
     fun setFooterLayout(@LayoutRes footerLayout: Int): RecyclerViewAdapter<T> {
         this.footerLayoutId = footerLayout
         return this
@@ -95,7 +124,9 @@ class RecyclerViewAdapter<T : Any>(
     init {
         dataClass.declaredMemberProperties.filter { BindView::class in it.annotations.map { it.annotationClass } }
             .forEach {
-                val field = it.javaField!!
+                val field = it.javaField ?: throw OperationNotImplementedException(
+                    OperationNotImplementedException.Operation.PropertyWithNoBackingField
+                )
                 field.isAccessible = true
                 fields += it.findAnnotation<BindView>()!! to field
             }
@@ -149,16 +180,12 @@ class RecyclerViewAdapter<T : Any>(
             when (viewType) {
                 HEADER -> {
                     val headerView = inflater.inflate(headerLayoutId, parent, attachToRoot)
-                    onHeaderClickListener?.let {
-                        it(headerView)
-                    }
+                    headerView.setOnClickListener(onHeaderClickListener)
                     return ViewHolder(headerView)
                 }
                 FOOTER -> {
                     val footerView = inflater.inflate(footerLayoutId, parent, attachToRoot)
-                    onFooterClickListener?.let {
-                        it(footerView)
-                    }
+                    footerView.setOnClickListener(onFooterClickListener)
                     return ViewHolder(footerView)
                 }
                 else -> {
@@ -182,6 +209,9 @@ class RecyclerViewAdapter<T : Any>(
         }
     }
 
+    /**
+     * Starts the binding process.
+     */
     fun apply(): Adapter {
         recyclerView.layoutManager = layoutManager.getLayoutManager(context)
         val adapter = Adapter()
@@ -192,13 +222,13 @@ class RecyclerViewAdapter<T : Any>(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(t: T, position: Int) {
             if (headerLayoutId != 0) {
-                bindItem(t, position + 1)
+                bindItem(itemView, t, position + 1)
             } else {
-                bindItem(t, position)
+                bindItem(itemView, t, position)
             }
         }
 
-        private fun bindItem(t: T, position: Int) {
+        private fun bindItem(itemView: View, t: T, position: Int) {
             for ((bindView, field) in fields) {
                 val value = field.get(t)
                 val view1 = views[bindView]!!
@@ -232,18 +262,32 @@ class RecyclerViewAdapter<T : Any>(
                                     CharSequence::class.simpleName,
                                     value::class.simpleName
                                 )
-                                // imageLoadTask.load(value.toString(), view1)
-                                // Glide.with(context).load(value.toString()).timeout(30000).placeholder(view1.drawable).into(view1)
+//                                Glide.with(context).load(value.toString())
+//                                    .placeholder(view1.drawable).into(view1)
                             }
                             else -> {
                                 throw OperationNotImplementedException()
                             }
                         }
                     }
+                    BindView.Field.DrawableId -> {
+                        when (view) {
+                            BindView.View.ImageView -> {
+                                view1 as? ImageView ?: throw UnexpectedViewTypeException(
+                                    ImageView::class.simpleName,
+                                    view1::class.simpleName
+                                )
+                                value as? Int ?: throw UnexpectedFieldTypeException(
+                                    Int::class.simpleName,
+                                    value::class.simpleName
+                                )
+                                view1.setImageResource(value)
+                            }
+                            else -> throw OperationNotImplementedException()
+                        }
+                    }
                     BindView.Field.Visibility -> {
-                        t as? VisibilityBind ?: throw OperationNotImplementedException(
-                            OperationNotImplementedException.Operation.VisibilityBind
-                        )
+                        t as? VisibilityBind ?: throw VisibilityWithoutVisibilityBindException()
                         view1.visibility = t.getVisibilityState(id, value).constant
                     }
                     BindView.Field.Enabled -> {
@@ -254,7 +298,9 @@ class RecyclerViewAdapter<T : Any>(
                         view1.isEnabled = value
                     }
                 }
-                bindAction?.invoke(itemView, t, position)
+            }
+            bindAction?.invoke(itemView, t, position)
+            itemView.setOnClickListener {
                 onItemClickListener?.invoke(t, position)
             }
         }
@@ -267,15 +313,23 @@ class RecyclerViewAdapter<T : Any>(
     }
 }
 
-fun <T : Any> RecyclerView.bind(
-    dataClass: KClass<T>,
+/**
+ * Constructs a [RecyclerViewAdapter] with the given arguments. Binds a [RecyclerView] given as
+ * receiver to the data given in [data]. The properties in class of [data] should be annotated with
+ * [BindView] to declare binding logic.
+ *
+ * You should call [RecyclerViewAdapter.apply] in order for binding to take place.
+ * @see BindView
+ * @sample [sample]
+ */
+inline fun <reified T : Any> RecyclerView.bind(
     data: List<T>,
     ctx: Context,
     @LayoutRes itemLayoutId: Int,
     layoutManager: RecyclerViewAdapter.LayoutManager = RecyclerViewAdapter.LayoutManager.LinearLayoutManager
 ) =
     RecyclerViewAdapter(
-        dataClass,
+        T::class,
         this,
         data,
         ctx,
@@ -284,17 +338,25 @@ fun <T : Any> RecyclerView.bind(
         layoutManager
     )
 
-@Language("kotlin")
-private const val example = """
-  data class User(@BindView(view = BindView.View.TextView, field = BindView.Field.Text) val name: String)
-  val data = listOf(User("Mohsen"), User("Mohamad"))
-  val resId = R.layout.recycler_view
-  val ctx = this
-  fun main() {
-      recyclerView.bind(User::class, data, ctx, resId).setOnItemClickListener {
-          if (it == 1) {
-              Log.d("TestTag", "You are the first in my list")
-          }
-      }.apply()
-  }
-"""
+private fun sample() {
+    //language=kotlin
+    """
+    data class User(
+        @BindView(
+            view = BindView.View.TextView,
+            field = BindView.Field.Text
+        ) val name: String
+    )
+
+    val data = listOf(User("Mohsen"), User("Mohamad"))
+    val resId = R.layout.recycler_view
+    val ctx = this
+    fun main() {
+        recyclerView.bind(data, ctx, resId).setOnItemClickListener {
+            if (it == 1) {
+                Log.d("TestTag", "You are the first in my list")
+            }
+        }.apply()
+    }
+    """
+}

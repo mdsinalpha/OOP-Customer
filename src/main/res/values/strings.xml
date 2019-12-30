@@ -3,4 +3,6 @@
     <string name="main_bottom_nav_products">محصولات</string>
     <string name="main_bottom_nav_basket">سبد خرید</string>
     <string name="main_bottom_nav_history">تاریخچه خرید</string>
+    <string name="product_categories">دسته بندی محصولات</string>
+    <string name="search">جستجو</string>
 </resources>
