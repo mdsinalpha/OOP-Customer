@@ -26,10 +26,10 @@ class RegisterActivity : AppCompatActivity() {
             } else {
                 NetworkTask(
                     REGISTER_LINK, NetworkTask.Method.POST, """{
-            "username": "${usernameTxt.text}",
-            "password":"${passwordTxt.text}",
-            "password_confirm": "${password_confirmTxt.text}",
-            "email":"${emailTxt.text}"
+                 "username": "${usernameTxt.text}",
+                 "password":"${passwordTxt.text}",
+                 "password_confirm": "${password_confirmTxt.text}",
+                 "email":"${emailTxt.text}"
         }""".trimIndent().jsonRequestBody,
                     this, "لطفا منتظر بمانید"
                 ).setOnCallBack { response, s ->
@@ -40,6 +40,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
     }
+
 
 
 }
