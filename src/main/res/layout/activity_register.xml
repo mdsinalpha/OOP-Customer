@@ -44,6 +44,7 @@
 
     <EditText
             android:layout_width="match_parent"
+            android:id="@+id/emailTxt"
             android:layout_height="wrap_content"
             android:hint="xyz@email.com"
             android:imeOptions="actionNext"
@@ -64,6 +65,7 @@
 
     <EditText
             android:layout_width="match_parent"
+            android:id="@+id/passwordTxt"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -83,6 +85,7 @@
 
     <EditText
             android:layout_width="match_parent"
+            android:id="@+id/password-confirmTxt"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:inputType="text"
