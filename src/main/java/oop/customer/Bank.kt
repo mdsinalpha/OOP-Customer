@@ -7,4 +7,6 @@ const val EDIT_PRO_LINK = "$SERVER_LINK/accounts/profile/"
 const val SELLER_CONTEACT_INFO_LINK = "$SERVER_LINK/communicate_seller/"
 
 
+const val PREF_KEY = "pref"
 const val USERNAME_KEY = "username"
+const val EMAIL_KEY = "email"

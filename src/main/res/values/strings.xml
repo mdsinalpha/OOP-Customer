@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">فروشگاه</string>
+    <string name="message_wait">لطفا کمی صبر کنید</string>
+    <string name="message_whitespace">این فیلد نمی‌تواند خالی باشد!</string>
     <string name="main_bottom_nav_products">محصولات</string>
     <string name="main_bottom_nav_basket">سبد خرید</string>
     <string name="main_bottom_nav_history">تاریخچه خرید</string>
@@ -14,6 +16,4 @@
     <string name="status_code">کد پیگیری</string>
     <string name="status_code2">کد پیگیری:</string>
     <string name="salesman_info_title">اطلاعات فروشنده</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

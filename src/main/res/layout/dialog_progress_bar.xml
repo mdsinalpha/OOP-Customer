@@ -19,6 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        style="@style/app_theme.text.small_title"/>
+        style="@style/app_theme.text.small_title"
+        android:textColor="@android:color/white"
+    />
 
 </RelativeLayout>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -15,7 +15,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/shoe" />
+        tools:srcCompat="@drawable/shoe"
+        app:civ_border_color="#000"
+        app:civ_border_width="1dp"
+    />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textView"
