@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/basket_p_title"
+                style="@style/app_theme.text.small_title"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/basket_p_title"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimary"
+                android:layout_marginTop="2dp"
+                app:layout_constraintTop_toBottomOf="@+id/basket_p_title"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp" android:id="@+id/view"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/basket_p_recycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintTop_toTopOf="@+id/view"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+                  android:id="@+id/basket_sheet"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="#fff"
+                  android:orientation="vertical"
+                  app:behavior_hideable="false"
+                  app:behavior_peekHeight="40dp"
+                  app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorSubtitle"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/basket_purchase"
+                android:text="@string/basket_purchase"
+                style="@style/app_theme.button"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp" />
+
+        <TextView
+                android:id="@+id/basket_price"
+                style="@style/app_theme.text"
+                android:textColor="@color/colorTitle"
+                android:textSize="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="مبلغ کل: ۲۰۰۰۰ تومان"
+                android:layout_marginBottom="5dp"/>
+
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -7,10 +7,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import oop.customer.api.showFragment
 import oop.customer.api.showFragment2
-import oop.customer.fragments.BasketFragment
-import oop.customer.fragments.ProductCategoriesFragment
-import oop.customer.fragments.ProfileFragment
-import oop.customer.fragments.SalesmanInfoFragment
+import oop.customer.fragments.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,9 +20,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.main_bottom_nav_products ->
                     ProductCategoriesFragment()
                 R.id.main_bottom_nav_basket ->
-                    BasketFragment()
-                R.id.main_bottom_nav_history ->
-                    SalesmanInfoFragment()
+                    BasketPurchaseFragment()
                 R.id.main_bottom_nav_profile ->
                     ProfileFragment()
                 else ->

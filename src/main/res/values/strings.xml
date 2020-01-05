@@ -4,7 +4,6 @@
     <string name="message_whitespace">این فیلد نمی‌تواند خالی باشد!</string>
     <string name="main_bottom_nav_products">محصولات</string>
     <string name="main_bottom_nav_basket">سبد خرید</string>
-    <string name="main_bottom_nav_history">تاریخچه خرید</string>
     <string name="product_categories">دسته بندی محصولات</string>
     <string name="search">جستجو</string>
     <string name="main_bottom_nav_profile">پروفایل</string>
@@ -16,6 +15,8 @@
     <string name="status_code">کد پیگیری</string>
     <string name="status_code2">کد پیگیری:</string>
     <string name="salesman_info_title">اطلاعات فروشنده</string>
+    <string name="basket_p_title">سبد خرید</string>
+    <string name="basket_purchase">پرداخت</string>
     <string name="we_are_good">
         ضمانت اصل بودن کالا
         امکان تحویل سریع
