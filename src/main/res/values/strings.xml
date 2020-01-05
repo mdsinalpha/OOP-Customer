@@ -16,4 +16,13 @@
     <string name="status_code">کد پیگیری</string>
     <string name="status_code2">کد پیگیری:</string>
     <string name="salesman_info_title">اطلاعات فروشنده</string>
+    <string name="we_are_good">
+        ضمانت اصل بودن کالا
+        امکان تحویل سریع
+        امکان پرداخت در محل
+    </string>
+    <string name="addToBasket">اضافه کردن به سبد خرید</string>
+    <string name="productDescription">مشحصات کالا</string>
+    <string name="addedToBasket">به سبد خرید اضافه شد</string>
+    <string name="comments">نظرات</string>
 </resources>
