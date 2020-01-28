@@ -86,6 +86,12 @@ inline infix fun <reified T : Fragment> FragmentActivity.showFragment(@IdRes fra
         .replace(frameLayout, T::class.createInstance()).commit()
 }
 
+fun FragmentActivity.showFragment2(fragment: Fragment, @IdRes frameLayout: Int) {
+    supportFragmentManager.beginTransaction()
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        .replace(frameLayout, fragment).commit()
+}
+
 /**
  * Sets up a simple [FragmentPagerAdapter] that binds the receiver [TabLayout] to [viewPager] with
  * [Pair]<[String],[Fragment]> as a map of Fragments to their names to bind.
