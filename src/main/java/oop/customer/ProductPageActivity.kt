@@ -7,26 +7,73 @@ import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
 import com.daimajia.slider.library.SliderTypes.TextSliderView
 import kotlinx.android.synthetic.main.activity_product_page.*
+import oop.customer.api.networktask.NetworkTask
 import oop.customer.api.snackMessage
 
 class ProductPageActivity : AppCompatActivity() {
+    val klaxon = Klaxon()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_page)
+        val productDetail = fetchProductDetailDataFromServer(intent.getStringExtra(PRODUCT_ID)!!)
+        setImagesOfSlider(productDetail!!.id)
+        setTitle(productDetail.name)
+        setWeAreGood()
+        setCost(productDetail.Price)
+        setAddToBasket(productDetail.id)
 
-        // TODO get information from server
 
-        // set slider
-        listOf(
-            "https://youshanshoes.com/wp-content/uploads/2019/01/Edit05.jpg",
-            "http://sport.pama.shop/content/images/thumbs/0002638_2018.jpeg",
-            "https://bolgano.com/9307-large_default_2x/%DA%A9%D9%81%D8%B4-%D8%A7%D8%B3%D9%BE%D8%B1%D8%AA-%D9%85%D8%B1%D8%AF%D8%A7%D9%86%D9%87-%DA%A9%D8%A7%D8%AA%D8%B1%D9%BE%DB%8C%D9%84%D8%A7%D8%B1-%D9%85%D8%AF%D9%84-caterpillar-intruder-p723902.jpg",
-            "https://dkstatics-public.digikala.com/digikala-products/115231998.jpg?x-oss-process=image/resize,h_1600/quality,q_80"
-        ).forEach {
+    }
+
+    private fun fetchProductDetailDataFromServer(productID: String): ProductDetail? {
+
+        var product: ProductDetail? = null
+        val networkTask =
+            NetworkTask(
+                "$SERVER_LINK/products/$productID/",
+                method = NetworkTask.Method.GET,
+                waitingMessage = getString(R.string.message_wait)
+            )
+        networkTask.setOnCallBack { response, s ->
+            product = klaxon.parse<ProductDetail>(response!!.body.toString())
+        }
+        return product
+    }
+
+    private fun fetchImagesOfProductFromServer(productID: Int): List<Image>? {
+        var images: List<Image>? = null
+        val networkTask =
+            NetworkTask(
+                "$SERVER_LINK/products/$productID/images",
+                method = NetworkTask.Method.GET,
+                waitingMessage = getString(R.string.message_wait)
+            )
+        networkTask.setOnCallBack { response, s ->
+            images = klaxon.parseArray(response!!.body.toString())
+        }
+        return images
+    }
+
+    private fun fetchCommentsOfProduct(productID: Int): List<Comment>? {
+        var comments: List<Comment>? =null
+        val networkTask =
+            NetworkTask(
+                "$SERVER_LINK/comment/$productID/",
+                method = NetworkTask.Method.GET,
+                waitingMessage = getString(R.string.message_wait)
+            )
+        networkTask.setOnCallBack { response, s ->
+            comments = klaxon.parseArray(response!!.body.toString())
+        }
+        return comments
+    }
+
+    private fun setImagesOfSlider(productID: Int) {
+        fetchImagesOfProductFromServer(productID)!!.forEach {
             val textSlider = TextSliderView(this)
             textSlider
-                .image(it)
+                .image("$SERVER_LINK$it.imageContent")
                 .setScaleType(BaseSliderView.ScaleType.CenterInside)
                 .setOnSliderClickListener {
                     // TODO zoom on image
@@ -36,22 +83,29 @@ class ProductPageActivity : AppCompatActivity() {
         slider.setPresetTransformer(SliderLayout.Transformer.Accordion)
         slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom)
         slider.setDuration(4000)
+    }
 
-        // TODO set product title from server
-
-        // set we are good
+    private fun setTitle(title: String){
+        productTitle.text = title
+    }
+    private fun setWeAreGood()
+    {
         weAreGood.text = getString(R.string.we_are_good)
+    }
 
-        // TODO set product cost from server
-        cost.text = "۲۰۰۰ تومان"
-
-
+    private fun setCost(price:Int){
+        cost.text = price.toString()
+    }
+    private fun setAddToBasket(productID: Int){
         addToBasket.text = getString(R.string.addToBasket)
         addToBasket.setOnClickListener {
             // TODO add to basket of user
             it.snackMessage(getString(R.string.addToBasket))
         }
 
+    }
+    private fun setCommentsAndProductDescription(poductID: Int, description:String )
+    {
         tabs.addTab(tabs.newTab().setText(getString(R.string.comments)))
         tabs.addTab(tabs.newTab().setText(getString(R.string.productDescription)))
     }
