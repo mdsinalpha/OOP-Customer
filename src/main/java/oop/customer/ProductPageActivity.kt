@@ -6,28 +6,28 @@ import com.beust.klaxon.Klaxon
 import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
 import com.daimajia.slider.library.SliderTypes.TextSliderView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_product_page.*
 import oop.customer.api.networktask.NetworkTask
 import oop.customer.api.snackMessage
 
 class ProductPageActivity : AppCompatActivity() {
-    val klaxon = Klaxon()
+    private val klaxon = Klaxon()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_page)
         val productDetail = fetchProductDetailDataFromServer(intent.getStringExtra(PRODUCT_ID)!!)
-        setImagesOfSlider(productDetail!!.id)
-        setTitle(productDetail.name)
-        setWeAreGood()
-        setCost(productDetail.Price)
-        setAddToBasket(productDetail.id)
-
-
+        if (productDetail != null) {
+            setImagesOfSlider(productDetail.id)
+            setTitle(productDetail.name)
+            setWeAreGood()
+            setCost(productDetail.Price)
+            setAddToBasket(productDetail.id)
+        }
     }
 
     private fun fetchProductDetailDataFromServer(productID: String): ProductDetail? {
-
         var product: ProductDetail? = null
         val networkTask =
             NetworkTask(
@@ -35,10 +35,21 @@ class ProductPageActivity : AppCompatActivity() {
                 method = NetworkTask.Method.GET,
                 waitingMessage = getString(R.string.message_wait)
             )
+
         networkTask.setOnCallBack { response, s ->
             product = klaxon.parse<ProductDetail>(response!!.body.toString())
+        }.send()
+        repeat(5000) {
+            Thread.sleep(1)
+            if (product != null)
+                return product
         }
-        return product
+        if (product == null) {
+            Snackbar.make(
+                product_page,getString(R.string.time_out_request), Snackbar.LENGTH_LONG).show()
+            return null
+        }
+        return null
     }
 
     private fun fetchImagesOfProductFromServer(productID: Int): List<Image>? {
@@ -56,7 +67,7 @@ class ProductPageActivity : AppCompatActivity() {
     }
 
     private fun fetchCommentsOfProduct(productID: Int): List<Comment>? {
-        var comments: List<Comment>? =null
+        var comments: List<Comment>? = null
         val networkTask =
             NetworkTask(
                 "$SERVER_LINK/comment/$productID/",
@@ -70,33 +81,41 @@ class ProductPageActivity : AppCompatActivity() {
     }
 
     private fun setImagesOfSlider(productID: Int) {
-        fetchImagesOfProductFromServer(productID)!!.forEach {
-            val textSlider = TextSliderView(this)
-            textSlider
-                .image("$SERVER_LINK$it.imageContent")
-                .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                .setOnSliderClickListener {
-                    // TODO zoom on image
-                }
-            slider.addSlider(textSlider)
-        }
+            NetworkTask(
+                "$SERVER_LINK/products/$productID/images",
+                method = NetworkTask.Method.GET,
+                waitingMessage = getString(R.string.message_wait)
+            ).setOnCallBack { response, s ->
+            klaxon.parseArray<Image>(response!!.body.toString())!!.forEach {
+                val textSlider = TextSliderView(this)
+                textSlider
+                    .image("$SERVER_LINK$it.imageContent")
+                    .setScaleType(BaseSliderView.ScaleType.CenterInside)
+                    .setOnSliderClickListener {
+                        // TODO zoom on image
+                    }
+                slider.addSlider(textSlider)
+
+            }
+        }.send()
         slider.setPresetTransformer(SliderLayout.Transformer.Accordion)
         slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom)
         slider.setDuration(4000)
     }
 
-    private fun setTitle(title: String){
+    private fun setTitle(title: String) {
         productTitle.text = title
     }
-    private fun setWeAreGood()
-    {
+
+    private fun setWeAreGood() {
         weAreGood.text = getString(R.string.we_are_good)
     }
 
-    private fun setCost(price:Int){
+    private fun setCost(price: Int) {
         cost.text = price.toString()
     }
-    private fun setAddToBasket(productID: Int){
+
+    private fun setAddToBasket(productID: Int) {
         addToBasket.text = getString(R.string.addToBasket)
         addToBasket.setOnClickListener {
             // TODO add to basket of user
@@ -104,8 +123,8 @@ class ProductPageActivity : AppCompatActivity() {
         }
 
     }
-    private fun setCommentsAndProductDescription(poductID: Int, description:String )
-    {
+
+    private fun setCommentsAndProductDescription(poductID: Int, description: String) {
         tabs.addTab(tabs.newTab().setText(getString(R.string.comments)))
         tabs.addTab(tabs.newTab().setText(getString(R.string.productDescription)))
     }

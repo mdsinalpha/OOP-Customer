@@ -29,4 +29,5 @@
     <string name="productDescription">مشخصات کالا</string>
     <string name="addedToBasket">به سبد خرید اضافه شد</string>
     <string name="comments">نظرات</string>
+    <string name="time_out_request"> اطلاعات از سرور دریافت نشد</string>
 </resources>
