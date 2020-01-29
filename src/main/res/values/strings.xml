@@ -2,10 +2,13 @@
     <string name="app_name">فروشگاه</string>
     <string name="message_wait">لطفا کمی صبر کنید</string>
     <string name="message_whitespace">این فیلد نمی‌تواند خالی باشد!</string>
+    <string name="message_re_password">تکرار رمز صحیح نیست!</string>
+    <string name="message_ol_password">رمز جدید نباید با رمز فعلی یکسان باشد!</string>
+    <string name="message_net_error">دسترسی به اینترنت ممکن نیست!</string>
     <string name="main_bottom_nav_products">محصولات</string>
     <string name="main_bottom_nav_basket">سبد خرید</string>
     <string name="product_categories">دسته بندی محصولات</string>
-    <string name="search">جستجو</string>
+    <string name="categories_title">دسته بندی ها</string>
     <string name="main_bottom_nav_profile">پروفایل</string>
     <string name="basket_title">محصولات خریداری شده</string>
     <string name="status_title">وضعیت خرید</string>

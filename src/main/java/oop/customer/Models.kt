@@ -17,10 +17,11 @@ data class Product2(
 )
 
 data class Category(
+    val id: Int,
     @BindView(id = "textView", view = BindView.View.TextView, field = BindView.Field.Text)
     val name: String,
     @BindView(id = "imageView", view = BindView.View.ImageView, field = BindView.Field.DrawableId)
-    val image: Int
+    val image: Int = R.drawable.shoe
 )
 
 data class SalesmanInfo(

@@ -8,7 +8,9 @@
             android:layout_width="match_parent"
             android:gravity="center"
             android:layoutDirection="rtl"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/profile_layout"
+            >
 
         <ImageView
                 android:layout_width="120dp"
@@ -28,6 +30,7 @@
 
         <EditText
                 android:id="@+id/p_usernameTxt"
+                android:enabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -66,14 +69,15 @@
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/vazir_bold"
                 android:textSize="14sp"
-                android:text="رمز فعلی"/>
+                android:text="رمز فعلی"
+                />
 
         <EditText
                 android:id="@+id/p_current_passTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/vazir"
                 android:layout_marginEnd="20dp"
@@ -86,14 +90,15 @@
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/vazir_bold"
                 android:textSize="14sp"
-                android:text="رمز جدید"/>
+                android:text="رمز جدید"
+                />
 
         <EditText
                 android:id="@+id/p_new_passTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/vazir"
                 android:layout_marginEnd="20dp"
@@ -106,14 +111,14 @@
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/vazir_bold"
                 android:textSize="14sp"
-                android:text="ورود مجدد رمز جدید"/>
+                android:text="ورود مجدد رمز جدید" />
 
         <EditText
                 android:id="@+id/p_re_passTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/vazir"
                 android:layout_marginEnd="20dp"
