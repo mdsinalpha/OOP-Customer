@@ -18,12 +18,12 @@
     <string name="basket_p_title">سبد خرید</string>
     <string name="basket_purchase">پرداخت</string>
     <string name="we_are_good">
-        ضمانت اصل بودن کالا
-        امکان تحویل سریع
+        ضمانت اصل بودن کالا\n
+        امکان تحویل سریع\n
         امکان پرداخت در محل
     </string>
     <string name="addToBasket">اضافه کردن به سبد خرید</string>
-    <string name="productDescription">مشحصات کالا</string>
+    <string name="productDescription">مشخصات کالا</string>
     <string name="addedToBasket">به سبد خرید اضافه شد</string>
     <string name="comments">نظرات</string>
 </resources>
