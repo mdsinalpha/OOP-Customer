@@ -8,6 +8,6 @@ const val EDIT_PRO_LINK = "$SERVER_LINK/rest-auth/password/change/"
 const val CATEGORIES_LINK = "$SERVER_LINK/store/categories/"
 
 const val PREF_KEY = "pref"
-const val AUTH_KEY = "token"
 const val USERNAME_KEY = "username"
 const val EMAIL_KEY = "email"
+const val PRODUCT_ID = "product_id"

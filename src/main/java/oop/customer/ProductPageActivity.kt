@@ -2,28 +2,79 @@ package oop.customer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import com.beust.klaxon.Klaxon
 import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
 import com.daimajia.slider.library.SliderTypes.TextSliderView
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_product_page.*
+import oop.customer.api.networktask.NetworkTask
+import oop.customer.api.snackMessage
 
 class ProductPageActivity : AppCompatActivity() {
+    val klaxon = Klaxon()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_page)
+        val productDetail = fetchProductDetailDataFromServer(intent.getStringExtra(PRODUCT_ID)!!)
+        setImagesOfSlider(productDetail!!.id)
+        setTitle(productDetail.name)
+        setWeAreGood()
+        setCost(productDetail.Price)
+        setAddToBasket(productDetail.id)
 
-        // TODO get information from server
 
-        // set slider
-        val images = mutableListOf<String>()
-        images.forEach {
+    }
+
+    private fun fetchProductDetailDataFromServer(productID: String): ProductDetail? {
+
+        var product: ProductDetail? = null
+        val networkTask =
+            NetworkTask(
+                "$SERVER_LINK/products/$productID/",
+                method = NetworkTask.Method.GET,
+                waitingMessage = getString(R.string.message_wait)
+            )
+        networkTask.setOnCallBack { response, s ->
+            product = klaxon.parse<ProductDetail>(response!!.body.toString())
+        }
+        return product
+    }
+
+    private fun fetchImagesOfProductFromServer(productID: Int): List<Image>? {
+        var images: List<Image>? = null
+        val networkTask =
+            NetworkTask(
+                "$SERVER_LINK/products/$productID/images",
+                method = NetworkTask.Method.GET,
+                waitingMessage = getString(R.string.message_wait)
+            )
+        networkTask.setOnCallBack { response, s ->
+            images = klaxon.parseArray(response!!.body.toString())
+        }
+        return images
+    }
+
+    private fun fetchCommentsOfProduct(productID: Int): List<Comment>? {
+        var comments: List<Comment>? =null
+        val networkTask =
+            NetworkTask(
+                "$SERVER_LINK/comment/$productID/",
+                method = NetworkTask.Method.GET,
+                waitingMessage = getString(R.string.message_wait)
+            )
+        networkTask.setOnCallBack { response, s ->
+            comments = klaxon.parseArray(response!!.body.toString())
+        }
+        return comments
+    }
+
+    private fun setImagesOfSlider(productID: Int) {
+        fetchImagesOfProductFromServer(productID)!!.forEach {
             val textSlider = TextSliderView(this)
             textSlider
-                .image(it)
-                .setScaleType(BaseSliderView.ScaleType.Fit)
+                .image("$SERVER_LINK$it.imageContent")
+                .setScaleType(BaseSliderView.ScaleType.CenterInside)
                 .setOnSliderClickListener {
                     // TODO zoom on image
                 }
@@ -32,25 +83,31 @@ class ProductPageActivity : AppCompatActivity() {
         slider.setPresetTransformer(SliderLayout.Transformer.Accordion)
         slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom)
         slider.setDuration(4000)
+    }
 
-        // TODO set product title from server
-        productTitle.text= ""
-
-        // set we are good
+    private fun setTitle(title: String){
+        productTitle.text = title
+    }
+    private fun setWeAreGood()
+    {
         weAreGood.text = getString(R.string.we_are_good)
+    }
 
-        // TODO set product cost from server
-        cost.text = ""
-
-
+    private fun setCost(price:Int){
+        cost.text = price.toString()
+    }
+    private fun setAddToBasket(productID: Int){
         addToBasket.text = getString(R.string.addToBasket)
         addToBasket.setOnClickListener {
             // TODO add to basket of user
-            Snackbar.make(it,getString(R.string.addedToBasket),Snackbar.LENGTH_SHORT).show()
-           }
+            it.snackMessage(getString(R.string.addToBasket))
+        }
 
-        tabs.addTab(tabs.newTab().setText(getString(R.string.productDescription)))
+    }
+    private fun setCommentsAndProductDescription(poductID: Int, description:String )
+    {
         tabs.addTab(tabs.newTab().setText(getString(R.string.comments)))
+        tabs.addTab(tabs.newTab().setText(getString(R.string.productDescription)))
     }
 
 }
