@@ -7,13 +7,16 @@ const val LOGIN_LINK = "$SERVER_LINK/store/login/"
 const val EDIT_PRO_LINK = "$SERVER_LINK/rest-auth/password/change/"
 const val CATEGORIES_LINK = "$SERVER_LINK/store/categories/"
 const val PRODUCTS_LINK = "$SERVER_LINK/store/products/"
+const val BASKET_LINK = "$SERVER_LINK/store/last_basket/"
+const val ADD_PRODUCT_TO_BASKET_LINK = "$SERVER_LINK/store/basketproducts/"
 
 const val PREF_KEY = "pref"
 const val AUTH_KEY = "token"
 const val USERNAME_KEY = "username"
 const val EMAIL_KEY = "email"
 const val PRODUCT_ID = "id"
-var IS_CREATED_BASKET = false
+const val BASKET_EXISTS_KEY = "basket_exists"
+
 enum class Status(val status: Int) {
     NOT_FOUND(404),
     CREATED(201),

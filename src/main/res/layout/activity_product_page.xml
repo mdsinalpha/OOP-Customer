@@ -47,7 +47,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="17dp"
-                android:text="کفش اسپورت"
                 app:layout_constraintBottom_toTopOf="@+id/weAreGood"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -82,6 +81,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/productTitle" />
 
             <com.google.android.material.button.MaterialButton
+                android:visibility="gone"
                 android:id="@+id/addToBasket"
                 style="@style/app_theme.button"
                 android:layout_width="0dp"
@@ -93,6 +93,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/weAreGood" />
 
             <com.google.android.material.tabs.TabLayout
+                app:tabTextColor="#9FFFFFFF"
+                app:tabSelectedTextColor="#fff"
+                android:visibility="gone"
                 android:id="@+id/tabs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

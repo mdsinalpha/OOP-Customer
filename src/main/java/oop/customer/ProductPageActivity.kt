@@ -1,5 +1,6 @@
 package oop.customer
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,7 +9,7 @@ import com.beust.klaxon.Klaxon
 import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
 import com.daimajia.slider.library.SliderTypes.TextSliderView
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_product_page.*
 import oop.customer.api.networktask.NetworkTask
 import oop.customer.api.networktask.jsonRequestBody
@@ -21,40 +22,30 @@ class ProductPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_page)
-        val productDetail = fetchProductDetailDataFromServer(intent.getStringExtra(PRODUCT_ID)!!)
-        if (productDetail != null) {
-            setImagesOfSlider(productDetail.id)
-            setTitle(productDetail.name)
-            setWeAreGood()
-            setCost(productDetail.Price)
-            setAddToBasket(productDetail.id)
-        }
+        settings = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE)
+        fetchProductDetailDataFromServer(intent.extras!!.getInt(PRODUCT_ID))
     }
 
-    private fun fetchProductDetailDataFromServer(productID: String): ProductDetail? {
-        var product: ProductDetail? = null
+    private fun fetchProductDetailDataFromServer(productID: Int){
         NetworkTask(
-            "$SERVER_LINK/products/$productID/",
+            "$PRODUCTS_LINK$productID/",
             NetworkTask.Method.GET,
             null,
             this,
-            getString(R.string.message_wait),
-            "Authorization" to "Token ${settings.getString(AUTH_KEY, "")}"
+            getString(R.string.message_wait)
         ).setOnCallBack { response, s ->
-            product = klaxon.parse<ProductDetail>(response!!.body.toString())
+            if(response?.code == 200 && s != null) {
+                val product = klaxon.parse<ProductDetail>(s)!!
+                setImagesOfSlider(product.id)
+                setTitle(product.name)
+                setWeAreGood()
+                setCost(product.Price)
+                setAddToBasket(product.id)
+                setCommentsAndProductDescription()
+            }
+            else
+                product_page.snackMessage(getString(R.string.time_out_request))
         }.send()
-        repeat(5000) {
-            Thread.sleep(1)
-            if (product != null)
-                return product
-        }
-        if (product == null) {
-            Snackbar.make(
-                product_page, getString(R.string.time_out_request), Snackbar.LENGTH_LONG
-            ).show()
-            return null
-        }
-        return null
     }
 
 //    private fun fetchCommentsOfProduct(productID: Int): List<Comment>? {
@@ -73,22 +64,23 @@ class ProductPageActivity : AppCompatActivity() {
 
     private fun setImagesOfSlider(productID: Int) {
         NetworkTask(
-            "$SERVER_LINK/products/$productID/images",
+            "$PRODUCTS_LINK$productID/images",
             NetworkTask.Method.GET,
             null,
-            this,
-            getString(R.string.message_wait),
-            "Authorization" to "Token ${settings.getString(AUTH_KEY, "")}"
+            null,
+            null
         ).setOnCallBack { response, s ->
-            klaxon.parseArray<Image>(response!!.body.toString())!!.forEach {
-                val textSlider = TextSliderView(this)
-                textSlider
-                    .image("$SERVER_LINK$it.imageContent")
-                    .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                    .setOnSliderClickListener {
-                        // TODO zoom on image
-                    }
-                slider.addSlider(textSlider)
+            if(response?.code == 200 && s != null){
+                klaxon.parseArray<Image>(s)!!.forEach {
+                    val textSlider = TextSliderView(this)
+                    textSlider
+                        .image("$SERVER_LINK${it.imageContent}")
+                        .setScaleType(BaseSliderView.ScaleType.CenterInside)
+                        .setOnSliderClickListener {
+                            // TODO zoom on image
+                        }
+                    slider.addSlider(textSlider)
+            }
 
             }
         }.send()
@@ -109,70 +101,64 @@ class ProductPageActivity : AppCompatActivity() {
         cost.text = price.toString()
     }
 
-    private fun createBasketAndAddProductToBasket(productID: Int, it: View) {
-        val count = 1;
-
+    private fun createBasketAndAddProductToBasket(productID: Int) {
         NetworkTask(
-            "$SERVER_LINK/last_basket/",
+            BASKET_LINK,
             NetworkTask.Method.POST,
-            null,
+            """{}""".jsonRequestBody,
             this,
             getString(R.string.wait_for_create_basket),
             "Authorization" to "Token ${settings.getString(AUTH_KEY, "")}"
-        ).setOnCallBack { response, s ->
-            if (response!!.code == Status.OK.ordinal) {
-                IS_CREATED_BASKET = true
-                NetworkTask(
-                    "$SERVER_LINK/basketproducts/",
-                    NetworkTask.Method.POST,
-                    """{
-                                    "product":$productID,
-                                    "count": $count
-                                    }""".trimIndent().jsonRequestBody,
-                    this,
-                    getString(R.string.wait_for_create_basket),
-                    "Authorization" to "Token ${settings.getString(AUTH_KEY, "")}"
-                ).setOnCallBack { response, s ->
-                    if (response!!.code == Status.OK.ordinal)
-                        it.snackMessage(getString(R.string.addedToBasket))
-                }.send()
+        ).setOnCallBack { response, _ ->
+            if (response?.code == 201) {
+                settings.edit().putBoolean(BASKET_EXISTS_KEY, true).apply()
+                AddToBasket(productID)
             }
+            else
+                product_page.snackMessage(getString(R.string.time_out_request))
         }.send()
 
     }
 
-    private fun AddToBasket(productID: Int, it: View) {
-        val count = 1;
+    private fun AddToBasket(productID: Int) {
         NetworkTask(
-            "$SERVER_LINK/basketproducts/",
+            ADD_PRODUCT_TO_BASKET_LINK,
             NetworkTask.Method.POST,
             """{
                                     "product":$productID,
-                                    "count": $count
+                                    "count": 1
                                     }""".trimIndent().jsonRequestBody,
             this,
-            getString(R.string.wait_for_create_basket),
+            getString(R.string.wait_for_add_to_basket),
             "Authorization" to "Token ${settings.getString(AUTH_KEY, "")}"
-        ).setOnCallBack { response, s ->
-            if (response!!.code == Status.OK.ordinal)
-                it.snackMessage(getString(R.string.addedToBasket))
+        ).setOnCallBack { response, _ ->
+            if (response?.code == 201)
+                product_page.snackMessage(getString(R.string.addedToBasket))
+            else
+                product_page.snackMessage(getString(R.string.time_out_request))
         }.send()
     }
 
     private fun setAddToBasket(productID: Int) {
+        addToBasket.visibility = View.VISIBLE
         addToBasket.text = getString(R.string.addToBasket)
         addToBasket.setOnClickListener {
-            if (!IS_CREATED_BASKET)
-                createBasketAndAddProductToBasket(productID, it)
+            if (!settings.getBoolean(BASKET_EXISTS_KEY, false))
+                createBasketAndAddProductToBasket(productID)
             else
-                AddToBasket(productID, it)
+                AddToBasket(productID)
         }
     }
 
-    private fun setCommentsAndProductDescription(poductID: Int, description: String) {
-        tabs.addTab(tabs.newTab().setText(getString(R.string.comments)))
-        tabs.addTab(tabs.newTab().setText(getString(R.string.productDescription)))
+    private lateinit var commentsTab: TabLayout.Tab
+    private lateinit var productInfoTab : TabLayout.Tab
 
+    private fun setCommentsAndProductDescription() {
+        tabs.visibility = View.VISIBLE
+        commentsTab = tabs.newTab().setText(getString(R.string.comments))
+        tabs.addTab(commentsTab)
+        productInfoTab = tabs.newTab().setText(getString(R.string.productDescription))
+        tabs.addTab(productInfoTab)
         tabs.setupWithViewPager(tab_pages)
     }
 
