@@ -6,15 +6,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_basket.*
-import oop.customer.Product
+import oop.customer.ProductDetail
 import oop.customer.R
 import oop.customer.api.recyclerview.bind
 
 class BasketFragment : Fragment() {
 
-    val testProducts = listOf (
-        Product(".۱", "یخچال سای بای ساید سامسونگ K540"),
-        Product(".۲", "مایکروفر من"))
+    val testProducts = listOf<ProductDetail>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

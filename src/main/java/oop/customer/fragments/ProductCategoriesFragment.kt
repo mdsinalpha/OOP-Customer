@@ -34,11 +34,11 @@ class ProductCategoriesFragment : Fragment() {
                         Klaxon().parseArray<Category>(s)!!,
                         context!!, R.layout.product_item
                     ).setOnItemClickListener {
-                        replaceWith(ProductsFragment(this.name), R.id.activity_main_frame)
+                        replaceWith(ProductsFragment(this), R.id.activity_main_frame)
                     }.apply()
                 }
                 else{
-                    categories_layout.snackMessage(getString(R.string.message_wait))
+                    product_list_layout.snackMessage(getString(R.string.message_wait))
                 }
             }.send()
     }
