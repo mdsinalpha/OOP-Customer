@@ -30,4 +30,6 @@
     <string name="addedToBasket">به سبد خرید اضافه شد</string>
     <string name="comments">نظرات</string>
     <string name="time_out_request"> اطلاعات از سرور دریافت نشد</string>
+    <string name="wait_for_create_basket">در حال ایجاد سبد خرید</string>
+    <string name="wait_for_add_to_basket">در حال اضافه کردن به سبد خرید</string>
 </resources>

@@ -12,7 +12,8 @@ const val PREF_KEY = "pref"
 const val AUTH_KEY = "token"
 const val USERNAME_KEY = "username"
 const val EMAIL_KEY = "email"
-const val PRODUCT_ID = "product_id"
+const val PRODUCT_ID = "id"
+var IS_CREATED_BASKET = false
 enum class Status(val status: Int) {
     NOT_FOUND(404),
     CREATED(201),

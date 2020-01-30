@@ -48,7 +48,7 @@ class ProductsFragment(private val category: Category) : Fragment() {
                         context!!,
                         R.layout.product_item
                     ).setOnItemClickListener{
-                        activity?.open<ProductPageActivity>("id" to this.id)
+                        activity?.open<ProductPageActivity>(PRODUCT_ID to this.id)
                     }.apply()
                 }
                 else{
