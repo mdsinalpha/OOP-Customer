@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/app_theme.text.title"
-            android:text="3E5DA"
+            android:id="@+id/tracking_code"
             android:textSize="35dp"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold" android:layout_marginTop="16dp"

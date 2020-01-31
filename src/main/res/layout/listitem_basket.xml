@@ -27,7 +27,6 @@
             android:textAlignment="textStart"
     />
     <TextView
-            android:text="کفش ورزشی"
             style="@style/app_theme.text.title"
             android:textSize="25sp"
             android:layout_width="0dp"
@@ -54,7 +53,6 @@
             app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
             style="@style/app_theme.text.title"
-            android:text="قرمز"
             android:textSize="25sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -108,7 +106,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/li_basket_price"/>
     <TextView
             style="@style/app_theme.text.title"
-            android:text="۴۰۰۰ تومان"
             android:textAlignment="textStart"
             android:textSize="25sp"
             android:layout_width="0dp"

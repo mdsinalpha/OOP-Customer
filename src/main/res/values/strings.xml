@@ -5,6 +5,9 @@
     <string name="message_re_password">تکرار رمز صحیح نیست!</string>
     <string name="message_ol_password">رمز جدید نباید با رمز فعلی یکسان باشد!</string>
     <string name="message_net_error">دسترسی به اینترنت ممکن نیست!</string>
+    <string name="message_empty_basket">سبد خرید شما خالی است!</string>
+    <string name="message_purchase">در حال خرید</string>
+    <string name="message_purchase_error">خرید با شکست مواجه شد.</string>
     <string name="main_bottom_nav_products">محصولات</string>
     <string name="main_bottom_nav_basket">سبد خرید</string>
     <string name="product_categories">دسته بندی محصولات</string>

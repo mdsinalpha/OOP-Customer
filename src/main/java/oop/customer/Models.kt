@@ -19,7 +19,6 @@ data class SalesmanInfo(
 )
 
 data class ProductDetail(
-    @BindView(id = "productIndex", view = BindView.View.TextView, field = BindView.Field.Text)
     val id: Int,
     @BindView(id = "productName", view = BindView.View.TextView, field = BindView.Field.Text)
     val name: String,
@@ -43,6 +42,8 @@ data class AbstractProductDetail(
 
 fun ProductDetail.abstract() = AbstractProductDetail(this.id, this.name)
 
+data class ProductWrapper(val product: ProductDetail)
+
 data class Image(
     val id: Int,
     val imageContent: String,
@@ -54,5 +55,10 @@ data class Comment(
     val text: String,
     val product: Int,
     val customer: Int
+)
+
+data class Color(
+    val id: Int,
+    val name: String
 )
 
