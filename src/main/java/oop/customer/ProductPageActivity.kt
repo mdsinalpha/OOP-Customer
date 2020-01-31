@@ -5,15 +5,19 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.beust.klaxon.Klaxon
 import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
 import com.daimajia.slider.library.SliderTypes.TextSliderView
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_product_page.*
 import oop.customer.api.networktask.NetworkTask
 import oop.customer.api.networktask.jsonRequestBody
 import oop.customer.api.snackMessage
+import oop.customer.fragments.CommentsFragment
+import oop.customer.fragments.DescriptionFragment
 
 class ProductPageActivity : AppCompatActivity() {
     private val klaxon = Klaxon()
@@ -41,26 +45,13 @@ class ProductPageActivity : AppCompatActivity() {
                 setWeAreGood()
                 setCost(product.Price)
                 setAddToBasket(product.id)
-                setCommentsAndProductDescription()
+                setCommentsAndProductDescription(product.id, product.description!!)
             }
             else
                 product_page.snackMessage(getString(R.string.time_out_request))
         }.send()
     }
 
-//    private fun fetchCommentsOfProduct(productID: Int): List<Comment>? {
-//        var comments: List<Comment>? = null
-//        NetworkTask(
-//            "$SERVER_LINK/comment/$productID/",
-//            NetworkTask.Method.GET,
-//            body = null,
-//            ctx = this,
-//            waitingMessage = getString(R.string.message_wait)
-//        ).setOnCallBack { response, s ->
-//            comments = klaxon.parseArray(response!!.body.toString())
-//        }
-//        return comments
-//    }
 
     private fun setImagesOfSlider(productID: Int) {
         NetworkTask(
@@ -150,16 +141,28 @@ class ProductPageActivity : AppCompatActivity() {
         }
     }
 
-    private lateinit var commentsTab: TabLayout.Tab
-    private lateinit var productInfoTab : TabLayout.Tab
 
-    private fun setCommentsAndProductDescription() {
+    private fun setCommentsAndProductDescription(productID: Int, description: String) {
         tabs.visibility = View.VISIBLE
-        commentsTab = tabs.newTab().setText(getString(R.string.comments))
-        tabs.addTab(commentsTab)
-        productInfoTab = tabs.newTab().setText(getString(R.string.productDescription))
-        tabs.addTab(productInfoTab)
         tabs.setupWithViewPager(tab_pages)
+        tab_pages.adapter = TabsPageAdapter(supportFragmentManager,productID, description )
     }
+    class TabsPageAdapter(fm: FragmentManager, private val productID: Int, private val description: String) : FragmentStatePagerAdapter(fm) {
+
+        override fun getCount(): Int  = 2
+
+        override fun getItem(i: Int): Fragment = when(i){
+            1-> CommentsFragment(productID)
+            2-> DescriptionFragment(description)
+            else -> CommentsFragment(productID)
+        }
+
+        override fun getPageTitle(position: Int): CharSequence = when(position){
+            1 -> "نظرات"
+            2 -> "مشحصات کالا"
+            else ->"مشحصات کالا"
+        }
+    }
+
 
 }
