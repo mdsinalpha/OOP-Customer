@@ -1,6 +1,7 @@
 package oop.customer
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
 import com.daimajia.slider.library.SliderTypes.TextSliderView
 import kotlinx.android.synthetic.main.activity_product_page.*
+import kotlinx.android.synthetic.main.activity_product_page.product_page
+import kotlinx.android.synthetic.main.comment_dilog.*
 import oop.customer.api.networktask.NetworkTask
 import oop.customer.api.networktask.jsonRequestBody
 import oop.customer.api.open
@@ -33,7 +36,7 @@ class ProductPageActivity : AppCompatActivity() {
         fetchProductDetailDataFromServer(intent.extras!!.getInt(PRODUCT_ID))
     }
 
-    private fun fetchProductDetailDataFromServer(productID: Int){
+    private fun fetchProductDetailDataFromServer(productID: Int) {
         NetworkTask(
             "$PRODUCTS_LINK$productID/",
             NetworkTask.Method.GET,
@@ -41,8 +44,8 @@ class ProductPageActivity : AppCompatActivity() {
             this,
             getString(R.string.message_wait)
         ).setOnCallBack { response, s ->
-            if(response?.code == 200 && s != null) {
-                val product = klaxon.parse<ProductDetail>(s)!!
+            if (response?.code == 200 && s != null) {
+                val product = klaxon.parse<ProductDetail2>(s)!!
                 setImagesOfSlider(product.id)
                 setTitle(product.name)
                 setWeAreGood()
@@ -50,8 +53,9 @@ class ProductPageActivity : AppCompatActivity() {
                 setAddToBasket(product.id)
                 setSalesmanInfo(product.salesman)
                 setCommentsAndProductDescription(product.id, product.description!!)
-            }
-            else
+                setGoToSalesMan(product.salesman)
+                setCreateComment(product.id, product.comment!!)
+            } else
                 product_page.snackMessage(getString(R.string.time_out_request))
         }.send()
     }
@@ -65,7 +69,7 @@ class ProductPageActivity : AppCompatActivity() {
             null,
             null
         ).setOnCallBack { response, s ->
-            if(response?.code == 200 && s != null){
+            if (response?.code == 200 && s != null) {
                 klaxon.parseArray<Image>(s)!!.forEach {
                     val textSlider = TextSliderView(this)
                     textSlider
@@ -75,7 +79,7 @@ class ProductPageActivity : AppCompatActivity() {
                             // TODO zoom on image
                         }
                     slider.addSlider(textSlider)
-            }
+                }
 
             }
         }.send()
@@ -108,15 +112,14 @@ class ProductPageActivity : AppCompatActivity() {
         ).setOnCallBack { response, _ ->
             if (response?.code == 201) {
                 settings.edit().putBoolean(BASKET_EXISTS_KEY, true).apply()
-                AddToBasket(productID)
-            }
-            else
+                addToBasket(productID)
+            } else
                 product_page.snackMessage(getString(R.string.time_out_request))
         }.send()
 
     }
 
-    private fun AddToBasket(productID: Int) {
+    private fun addToBasket(productID: Int) {
         NetworkTask(
             ADD_PRODUCT_TO_BASKET_LINK,
             NetworkTask.Method.POST,
@@ -142,7 +145,7 @@ class ProductPageActivity : AppCompatActivity() {
             if (!settings.getBoolean(BASKET_EXISTS_KEY, false))
                 createBasketAndAddProductToBasket(productID)
             else
-                AddToBasket(productID)
+                addToBasket(productID)
         }
     }
 
@@ -161,6 +164,54 @@ class ProductPageActivity : AppCompatActivity() {
         tabs.visibility = View.VISIBLE
         tabs.setupWithViewPager(tab_pages)
     }
+
+    private fun setGoToSalesMan(salesMan: Int) {
+        goToSalesmanProfile.visibility = View.VISIBLE
+        goToSalesmanProfile.text = getString(R.string.salesMan)
+        goToSalesmanProfile.setOnClickListener {
+
+        }
+    }
+
+    private fun setCreateComment(productID: Int, allowedToCreateComment: Boolean) {
+        create_comment.setOnClickListener {
+            if (!allowedToCreateComment) {
+                product_page.snackMessage(getString((R.string.add_comment_deny)))
+            } else {
+                val d = Dialog(this)
+                d.setContentView(R.layout.comment_dilog)
+                d.show()
+                d.register_comment.setOnClickListener {
+                    val body = d.input_comment.text
+                    NetworkTask(
+                        "$SERVER_LINK/store/create_comment/",
+                        NetworkTask.Method.POST,
+                        """{
+                                    "product":$productID,
+                                    "text": $body
+                                    }""".trimIndent().jsonRequestBody,
+                        this,
+                        getString(R.string.wait_for_add_to_basket),
+                        "Authorization" to "Token ${settings.getString(AUTH_KEY, "")}"
+                    ).setOnCallBack { response, _ ->
+                        if (response?.code == 201) {
+                            d.comment_dilog.snackMessage(getString(R.string.added_comment))
+                        } else
+                            d.register_comment.snackMessage(getString(R.string.time_out_request))
+                    }.send()
+                }
+
+
+            }
+        }
+    }
+}
+
+class TabsPageAdapter(
+    fm: FragmentManager,
+    private val productID: Int,
+    private val description: String
+) : FragmentStatePagerAdapter(fm) {
     class TabsPageAdapter(fm: FragmentManager, private val productID: Int, private val description: String) : FragmentPagerAdapter(fm) {
 
         override fun getCount(): Int  = 2

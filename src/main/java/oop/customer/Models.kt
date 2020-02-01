@@ -30,6 +30,22 @@ data class ProductDetail(
     val salesman: Int,
     val color: Int?,
     val category: Int?
+    //val comment : Boolean?
+)
+
+data class ProductDetail2(
+    val id: Int,
+    @BindView(id = "productName", view = BindView.View.TextView, field = BindView.Field.Text)
+    val name: String,
+    val count: Int,
+    val description: String?,
+    val isStock: Boolean,
+    val Price: Int,
+    val recordTime: String,
+    val salesman: Int,
+    val color: Int?,
+    val category: Int?,
+    val comment : Boolean?
 )
 
 data class AbstractProductDetail(
