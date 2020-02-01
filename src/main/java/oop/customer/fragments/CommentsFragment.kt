@@ -32,7 +32,7 @@ class CommentsFragment(private val productID: Int) : Fragment() {
         super.onActivityCreated(savedInstanceState)
         settings = activity!!.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE)
         NetworkTask(
-            "$SERVER_LINK/comment/$productID/",
+            "$SERVER_LINK/store/comment/$productID/",
             NetworkTask.Method.GET,
             null,
             activity,
@@ -42,6 +42,7 @@ class CommentsFragment(private val productID: Int) : Fragment() {
             if (response!!.code == 200 && s != null) {
                 klaxon.parseArray<Comment>(response!!.body.toString())!!.forEach {
                     val textView = TextView(activity)
+                    textView.text= it.text
                     comments.addView(textView)
                 }
             }

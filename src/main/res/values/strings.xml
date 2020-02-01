@@ -35,4 +35,7 @@
     <string name="time_out_request"> اطلاعات از سرور دریافت نشد</string>
     <string name="wait_for_create_basket">در حال ایجاد سبد خرید</string>
     <string name="wait_for_add_to_basket">در حال اضافه کردن به سبد خرید</string>
+    <string name="salesMan">فروشنده</string>
+    <string name="added_comment">نظر شما ثبت شد</string>
+    <string name="add_comment_deny">شما حق ثبت نظر را ندارید.</string>
 </resources>
