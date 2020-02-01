@@ -15,14 +15,11 @@ class DescriptionFragment(val description: String): Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
         return inflater.inflate(R.layout.description_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        print("AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFf")
         super.onActivityCreated(savedInstanceState)
         text1.text = description
-
     }
 }

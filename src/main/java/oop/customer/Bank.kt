@@ -13,6 +13,7 @@ const val LAST_BASKET_LINK = "$SERVER_LINK/store/last-basket/"
 const val ADD_PRODUCT_TO_BASKET_LINK = "$SERVER_LINK/store/basketproducts/"
 const val PURCHASE_LINK = "$SERVER_LINK/store/purchase/"
 const val SALESMAN_INFO_LINK = "$SERVER_LINK/store/salesmans/"
+const val COMMENTS_LINK = "$SERVER_LINK/store/product-comment/"
 
 const val PREF_KEY = "pref"
 const val AUTH_KEY = "token"

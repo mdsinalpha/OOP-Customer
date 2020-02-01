@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/comments"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:gravity="center">
 
         <!-- Include other widget or layout tags here. These are considered

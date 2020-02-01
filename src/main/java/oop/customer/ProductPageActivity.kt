@@ -1,5 +1,6 @@
 package oop.customer
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.FragmentPagerAdapter
 import com.beust.klaxon.Klaxon
 import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
@@ -15,9 +16,11 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView
 import kotlinx.android.synthetic.main.activity_product_page.*
 import oop.customer.api.networktask.NetworkTask
 import oop.customer.api.networktask.jsonRequestBody
+import oop.customer.api.open
 import oop.customer.api.snackMessage
 import oop.customer.fragments.CommentsFragment
 import oop.customer.fragments.DescriptionFragment
+import java.lang.Exception
 
 class ProductPageActivity : AppCompatActivity() {
     private val klaxon = Klaxon()
@@ -45,6 +48,7 @@ class ProductPageActivity : AppCompatActivity() {
                 setWeAreGood()
                 setCost(product.Price)
                 setAddToBasket(product.id)
+                setSalesmanInfo(product.salesman)
                 setCommentsAndProductDescription(product.id, product.description!!)
             }
             else
@@ -88,8 +92,9 @@ class ProductPageActivity : AppCompatActivity() {
         weAreGood.text = getString(R.string.we_are_good)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setCost(price: Int) {
-        cost.text = price.toString()
+        cost.text = "$price تومان"
     }
 
     private fun createBasketAndAddProductToBasket(productID: Int) {
@@ -141,26 +146,35 @@ class ProductPageActivity : AppCompatActivity() {
         }
     }
 
+    private fun setSalesmanInfo(salesmanID: Int){
+        salesmanInfo.visibility = View.VISIBLE
+        salesmanInfo.text = "اطلاعات فروشنده"
+        salesmanInfo.setOnClickListener {
+            open<SalesmanInfoActivity>(SALESMAN_ID to salesmanID)
+        }
+    }
+
 
     private fun setCommentsAndProductDescription(productID: Int, description: String) {
+        tab_pages.adapter = TabsPageAdapter(supportFragmentManager, productID, description)
+        tab_pages.currentItem = 1
         tabs.visibility = View.VISIBLE
         tabs.setupWithViewPager(tab_pages)
-        tab_pages.adapter = TabsPageAdapter(supportFragmentManager,productID, description )
     }
-    class TabsPageAdapter(fm: FragmentManager, private val productID: Int, private val description: String) : FragmentStatePagerAdapter(fm) {
+    class TabsPageAdapter(fm: FragmentManager, private val productID: Int, private val description: String) : FragmentPagerAdapter(fm) {
 
         override fun getCount(): Int  = 2
 
         override fun getItem(i: Int): Fragment = when(i){
-            1-> CommentsFragment(productID)
-            2-> DescriptionFragment(description)
-            else -> CommentsFragment(productID)
+            0-> CommentsFragment(productID)
+            1-> DescriptionFragment(description)
+            else -> throw Exception("")
         }
 
         override fun getPageTitle(position: Int): CharSequence = when(position){
-            1 -> "نظرات"
-            2 -> "مشحصات کالا"
-            else ->"مشحصات کالا"
+            0 -> "نظرات"
+            1 -> "مشحصات کالا"
+            else -> throw Exception("")
         }
     }
 

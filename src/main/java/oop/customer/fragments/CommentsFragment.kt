@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import com.beust.klaxon.Klaxon
 import kotlinx.android.synthetic.main.comment_fragment.*
-import kotlinx.android.synthetic.main.product_item.*
 import oop.customer.*
 import oop.customer.api.networktask.NetworkTask
 
@@ -32,16 +35,20 @@ class CommentsFragment(private val productID: Int) : Fragment() {
         super.onActivityCreated(savedInstanceState)
         settings = activity!!.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE)
         NetworkTask(
-            "$SERVER_LINK/comment/$productID/",
+            "$COMMENTS_LINK$productID/",
             NetworkTask.Method.GET,
             null,
-            activity,
+            null,
             null,
             "Authorization" to "Token ${settings.getString(AUTH_KEY, "")}"
         ).setOnCallBack { response, s ->
-            if (response!!.code == 200 && s != null) {
-                klaxon.parseArray<Comment>(response!!.body.toString())!!.forEach {
+            if (response?.code == 200 && s != null) {
+                klaxon.parseArray<Comment>(s)!!.forEach {
                     val textView = TextView(activity)
+                    val layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                    textView.layoutParams = layoutParams
+                    textView.text = it.text
+                    textView.setPadding(5)
                     comments.addView(textView)
                 }
             }
