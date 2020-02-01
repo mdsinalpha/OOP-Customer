@@ -10,6 +10,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.beust.klaxon.Klaxon
 import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
@@ -53,7 +54,6 @@ class ProductPageActivity : AppCompatActivity() {
                 setAddToBasket(product.id)
                 setSalesmanInfo(product.salesman)
                 setCommentsAndProductDescription(product.id, product.description!!)
-                setGoToSalesMan(product.salesman)
                 setCreateComment(product.id, product.comment!!)
             } else
                 product_page.snackMessage(getString(R.string.time_out_request))
@@ -149,7 +149,7 @@ class ProductPageActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSalesmanInfo(salesmanID: Int){
+    private fun setSalesmanInfo(salesmanID: Int) {
         salesmanInfo.visibility = View.VISIBLE
         salesmanInfo.text = "اطلاعات فروشنده"
         salesmanInfo.setOnClickListener {
@@ -165,13 +165,6 @@ class ProductPageActivity : AppCompatActivity() {
         tabs.setupWithViewPager(tab_pages)
     }
 
-    private fun setGoToSalesMan(salesMan: Int) {
-        goToSalesmanProfile.visibility = View.VISIBLE
-        goToSalesmanProfile.text = getString(R.string.salesMan)
-        goToSalesmanProfile.setOnClickListener {
-
-        }
-    }
 
     private fun setCreateComment(productID: Int, allowedToCreateComment: Boolean) {
         create_comment.setOnClickListener {
@@ -211,23 +204,20 @@ class TabsPageAdapter(
     fm: FragmentManager,
     private val productID: Int,
     private val description: String
-) : FragmentStatePagerAdapter(fm) {
-    class TabsPageAdapter(fm: FragmentManager, private val productID: Int, private val description: String) : FragmentPagerAdapter(fm) {
+) : FragmentPagerAdapter(fm) {
 
-        override fun getCount(): Int  = 2
+    override fun getCount(): Int = 2
 
-        override fun getItem(i: Int): Fragment = when(i){
-            0-> CommentsFragment(productID)
-            1-> DescriptionFragment(description)
-            else -> throw Exception("")
-        }
-
-        override fun getPageTitle(position: Int): CharSequence = when(position){
-            0 -> "نظرات"
-            1 -> "مشحصات کالا"
-            else -> throw Exception("")
-        }
+    override fun getItem(i: Int): Fragment = when (i) {
+        0 -> CommentsFragment(productID)
+        1 -> DescriptionFragment(description)
+        else -> throw Exception("")
     }
 
-
+    override fun getPageTitle(position: Int): CharSequence = when (position) {
+        0 -> "نظرات"
+        1 -> "مشحصات کالا"
+        else -> throw Exception("")
+    }
 }
+
