@@ -23,9 +23,3 @@ const val PRODUCT_ID = "id"
 const val SALESMAN_ID = "sid"
 const val BASKET_EXISTS_KEY = "basket_exists"
 
-enum class HttpResponseStatus(val code: Int) {
-    ERROR(400),
-    NOT_FOUND(404),
-    CREATED(201),
-    OK(200)
-}

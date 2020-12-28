@@ -52,7 +52,7 @@ class BasketPurchaseFragment(val colors: Map<Int, Color>): Fragment(){
                                 val product = element.product
                                 li_basket_name.text = product.name
                                 li_basket_color.text = colors.getOrDefault(product.color ?: 0,  Color(1, "بی رنگ")).name
-                                li_basket_cnt.value = product.count
+                                li_basket_cnt.value = 1
                                 li_basket_price.text = "${product.Price} تومان"
                             }.apply()
                         basket_price.text = "${products.fold(0, {acc, it -> acc + it.product.Price })} تومان"

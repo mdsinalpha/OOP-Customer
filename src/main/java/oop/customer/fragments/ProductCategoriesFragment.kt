@@ -38,7 +38,7 @@ class ProductCategoriesFragment : Fragment() {
                     }.apply()
                 }
                 else{
-                    product_list_layout.snackMessage(getString(R.string.message_wait))
+                    product_list_layout.snackMessage(getString(R.string.message_net_error))
                 }
             }.send()
     }

@@ -10,7 +10,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentStatePagerAdapter
 import com.beust.klaxon.Klaxon
 import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
@@ -54,7 +53,7 @@ class ProductPageActivity : AppCompatActivity() {
                 setAddToBasket(product.id)
                 setSalesmanInfo(product.salesman)
                 setCommentsAndProductDescription(product.id, product.description!!)
-                setCreateComment(product.id, product.comment!!)
+                setCreateComment(product.id, true)
             } else
                 product_page.snackMessage(getString(R.string.time_out_request))
         }.send()
@@ -181,16 +180,16 @@ class ProductPageActivity : AppCompatActivity() {
                         NetworkTask.Method.POST,
                         """{
                                     "product":$productID,
-                                    "text": $body
+                                    "text": "$body"
                                     }""".trimIndent().jsonRequestBody,
                         this,
-                        getString(R.string.wait_for_add_to_basket),
+                        getString(R.string.message_wait),
                         "Authorization" to "Token ${settings.getString(AUTH_KEY, "")}"
                     ).setOnCallBack { response, _ ->
                         if (response?.code == 201) {
-                            d.comment_dilog.snackMessage(getString(R.string.added_comment))
+                            d.comment_dialog.snackMessage(getString(R.string.added_comment))
                         } else
-                            d.register_comment.snackMessage(getString(R.string.time_out_request))
+                            d.register_comment.snackMessage(getString(R.string.add_comment_deny))
                     }.send()
                 }
 
