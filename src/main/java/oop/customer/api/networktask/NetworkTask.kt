@@ -125,7 +125,7 @@ open class NetworkTask(
             response to response.body?.string()
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            null to null
         }
 
         override fun onPostExecute(result: Pair<Response?, String?>) {

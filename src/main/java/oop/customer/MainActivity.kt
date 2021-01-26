@@ -1,81 +1,79 @@
 package oop.customer
 
-import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+
 import androidx.fragment.app.Fragment
 import com.beust.klaxon.Klaxon
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_basket.*
-import kotlinx.android.synthetic.main.fragment_salesman_info.*
-import oop.customer.Fragments.ProfileFragment
 import oop.customer.api.networktask.NetworkTask
-import oop.customer.api.networktask.jsonRequestBody
-import oop.customer.api.recyclerview.bind
+import oop.customer.api.showFragment
+import oop.customer.api.showFragment2
+import oop.customer.fragments.*
+import org.json.JSONArray
 
 class MainActivity : AppCompatActivity() {
 
-    /*
-    val testProducts = listOf(Product(".۱", "یخچال سای بای ساید سامسونگ K540"),
-        Product(".۲", "مایکروفر من"))
-    val testProducts2 = ArrayList<Product>()
-    */
+    private lateinit var settings: SharedPreferences
 
-    /*
-    val allInfo = listOf(
-        SalesmanInfo("نام و نام خانوادگی", "رضا رمضانی"),
-        SalesmanInfo("شماره تلفن", "۰۹۱۳۸۷۸۲۵۲۸"),
-        SalesmanInfo("ایمیل", "ramezani.cs@gmail.com"),
-        SalesmanInfo("آدرس", "ساختمان انصاری")
-    )
-    */
+    private var colors = mutableMapOf<Int, Color>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        settings = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE)
+        showFragment<ProductCategoriesFragment>(R.id.activity_main_frame)
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener {
             val frag: Fragment? = when(it.itemId){
                 R.id.main_bottom_nav_products ->
-                    null
+                    ProductCategoriesFragment()
                 R.id.main_bottom_nav_basket ->
-                    null
-                R.id.main_bottom_nav_history ->
-                    null
+                    BasketPurchaseFragment(colors)
                 R.id.main_bottom_nav_profile ->
                     ProfileFragment()
                 else ->
                     null
             }
             frag?.let {
-                supportFragmentManager.beginTransaction().replace(R.id.activity_main_frame, frag).commit()
+                showFragment2(frag, R.id.activity_main_frame)
             }
             true
         }
-        // salesman_info_recycler.bind(allInfo, this, R.layout.listitem_salesman_info).apply()
-        /*
-            status_code.setOnClickListener {
-                val d = Dialog(this@MainActivity)
-                d.setContentView(R.layout.dialog_code)
-                d.show()
-            }
-            for(i in 0..10)
-                testProducts2.addAll(testProducts)
-            basket_recycler.bind(testProducts2, this, R.layout.listitem_product).apply()
-        */
+        NetworkTask(BASKET_LINK, NetworkTask.Method.GET, null, null, null,
+            "Authorization" to "Token ${settings.getString(AUTH_KEY, "")}")
+            .setOnCallBack { response, s ->
+                if(response?.code == 200 && s != null){
+                    val jArray = JSONArray(s)
+                    settings.edit().putBoolean(BASKET_EXISTS_KEY, jArray.length() != 0).apply()
+                }
+            }.send()
+        // Fetching colors:
+        NetworkTask(COLORS_LINK, NetworkTask.Method.GET, null, null, null)
+            .setOnCallBack { response, s ->
+                if(response?.code == 200 && s != null){
+                    val colorsList = Klaxon().parseArray<Color>(s)
+                    colorsList?.let {
+                        colors.clear()
+                        it.forEach { color ->
+                            colors[color.id] = color
+                        }
+                    }
+                }
+            }.send()
 
-        /*
-        val et: EditText? = null
-        NetworkTask(LOGIN_LINK, NetworkTask.Method.POST, """{
-            "name": "${et?.text}",
-        }""".jsonRequestBody, this, "Please wait...").setOnCallBack { response, s ->
-            s?.let {
-                val p: Person? = Klaxon().parse<Person>(it)
-
-            }
-        } .send()
-        */
     }
 
-    // data class Person(val name: String)
+    var onBackPressedCallback: () -> Unit = { super.onBackPressed() }
+
+    override fun onBackPressed() {
+        onBackPressedCallback()
+    }
+
+    fun onBackReset() {
+        onBackPressedCallback = { super.onBackPressed() }
+    }
 }
+
+

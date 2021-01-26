@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">فروشگاه</string>
+    <string name="message_wait">لطفا کمی صبر کنید</string>
+    <string name="message_whitespace">این فیلد نمی‌تواند خالی باشد!</string>
+    <string name="message_re_password">تکرار رمز صحیح نیست!</string>
+    <string name="message_ol_password">رمز جدید نباید با رمز فعلی یکسان باشد!</string>
+    <string name="message_net_error">دسترسی به اینترنت ممکن نیست!</string>
+    <string name="message_empty_basket">سبد خرید شما خالی است!</string>
+    <string name="message_purchase">در حال خرید</string>
+    <string name="message_purchase_error">خرید با شکست مواجه شد.</string>
     <string name="main_bottom_nav_products">محصولات</string>
     <string name="main_bottom_nav_basket">سبد خرید</string>
-    <string name="main_bottom_nav_history">تاریخچه خرید</string>
+    <string name="product_categories">دسته بندی محصولات</string>
+    <string name="categories_title">دسته بندی ها</string>
     <string name="main_bottom_nav_profile">پروفایل</string>
     <string name="basket_title">محصولات خریداری شده</string>
     <string name="status_title">وضعیت خرید</string>
@@ -12,16 +21,21 @@
     <string name="status_code">کد پیگیری</string>
     <string name="status_code2">کد پیگیری:</string>
     <string name="salesman_info_title">اطلاعات فروشنده</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="basket_p_title">سبد خرید</string>
+    <string name="basket_purchase">پرداخت</string>
     <string name="we_are_good">
-        ضمانت اصل بودن کالا
-        امکان تحویل سریع
+        ضمانت اصل بودن کالا\n
+        امکان تحویل سریع\n
         امکان پرداخت در محل
     </string>
     <string name="addToBasket">اضافه کردن به سبد خرید</string>
-    <string name="productDescription">مشحصات کالا</string>
+    <string name="productDescription">مشخصات کالا</string>
     <string name="addedToBasket">به سبد خرید اضافه شد</string>
     <string name="comments">نظرات</string>
+    <string name="time_out_request"> اطلاعات از سرور دریافت نشد</string>
+    <string name="wait_for_create_basket">در حال ایجاد سبد خرید</string>
+    <string name="wait_for_add_to_basket">در حال اضافه کردن به سبد خرید</string>
+    <string name="salesMan">فروشنده</string>
+    <string name="added_comment">نظر شما ثبت شد</string>
+    <string name="add_comment_deny">شما حق ثبت نظر را ندارید.</string>
 </resources>
